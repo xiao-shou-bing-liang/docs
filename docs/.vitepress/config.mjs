@@ -51,7 +51,6 @@ export default defineConfig({
     ],
     sidebar: {
       '/老博客/': [
-        { text: '前言', link: '/老博客/' },
         {
           text: '环境配置',
           link: '/老博客/环境/',
@@ -59,14 +58,14 @@ export default defineConfig({
           items: [
             {
               text: '操作系统安装',
-              collapsed: false,
+              collapsed: true,
               items: [
                 { text: '系统安装', link: '/老博客/环境/操作系统环境/系统安装' },
               ]
             },
             {
               text: '编程语言环境配置',
-              collapsed: false,
+              collapsed: true,
               items: [
                 { text: '汇编语言', link: '/老博客/环境/各类语言环境配置/汇编语言' },
               ]
@@ -80,7 +79,7 @@ export default defineConfig({
           items: [
             {
               text: '计算机',
-              collapsed: false,
+              collapsed: true,
               items: [
                 { text: '网络知识基础', link: '/老博客/基础知识/计算机/《Linux网络基础》总集篇' },
                 { text: 'Linux基础', link: '/老博客/基础知识/计算机/《Linux基础》总集篇' },
@@ -92,13 +91,13 @@ export default defineConfig({
             {
               text: '后端开发',
               link: '/老博客/基础知识/后端开发/',
-              collapsed: false,
+              collapsed: true,
               items: [
                 { text: 'javaweb 课程总结', link: '/老博客/基础知识/后端开发/javaweb/课程总结' },
                 {
                   text: '苍穹外卖',
                   link: '/老博客/基础知识/后端开发/苍穹外卖/',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
                     { text: 'day-01', link: '/老博客/基础知识/后端开发/苍穹外卖/day-01' },
                     { text: 'day-02', link: '/老博客/基础知识/后端开发/苍穹外卖/day-02' },
@@ -118,12 +117,12 @@ export default defineConfig({
             {
               text: '前端开发',
               link: '/老博客/基础知识/前端开发/',
-              collapsed: false,
+              collapsed: true,
               items: [
                 {
                   text: 'Vue3 知识库',
                   link: '/老博客/基础知识/前端开发/Vue3/',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
                     { text: '简介', link: '/老博客/基础知识/前端开发/Vue3/简介' },
                     { text: '快速上手', link: '/老博客/基础知识/前端开发/Vue3/快速上手' },
@@ -135,7 +134,7 @@ export default defineConfig({
                     {
                       text: '现代前端开发必知',
                       link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/',
-                      collapsed: false,
+                      collapsed: true,
                       items: [
                         { text: '01-如何成为现代前端六边形战士', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/01-如何成为现代前端六边形战士' },
                         { text: '02-上期回顾与章节概览', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/02-上期回顾与章节概览' },
@@ -152,7 +151,7 @@ export default defineConfig({
                     {
                       text: 'CSS 实战',
                       link: '/老博客/基础知识/前端开发/Vue3/CSS/',
-                      collapsed: false,
+                      collapsed: true,
                       items: [
                         { text: 'CSS爆肝', link: '/老博客/基础知识/前端开发/Vue3/CSS/' },
                         { text: 'header主体框架', link: '/老博客/基础知识/前端开发/Vue3/CSS/header主体框架' },
@@ -163,24 +162,15 @@ export default defineConfig({
                   ],
                 },
                 {
-                  text: '动画与交互',
-                  link: '/老博客/基础知识/前端开发/动画与交互/',
-                  collapsed: false,
-                  items: [
-                    { text: 'Gsap 时间线', link: '/老博客/基础知识/前端开发/动画与交互/时间线以及简单的效果' },
-                    { text: '滑动阻尼与横向滚动', link: '/老博客/基础知识/前端开发/动画与交互/滑动阻尼与横向滚动' },
-                    { text: 'ES6异步处理', link: '/老博客/基础知识/前端开发/动画与交互/ES6异步处理' },
-                  ],
-                },
-                {
                   text: '工程实践',
                   link: '/老博客/基础知识/前端开发/工程实践/',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
                     { text: '动态首页配置', link: '/老博客/基础知识/前端开发/工程实践/动态首页配置' },
                     { text: '主要页面逻辑', link: '/老博客/基础知识/前端开发/工程实践/主要页面逻辑' },
                     { text: '新的DOM操作', link: '/老博客/基础知识/前端开发/工程实践/新的DOM操作' },
                     { text: '文件上传', link: '/老博客/基础知识/前端开发/工程实践/文件上传' },
+                    { text: 'ES6异步处理', link: '/老博客/基础知识/前端开发/工程实践/ES6异步处理' },
                   ],
                 },
               ],
@@ -194,7 +184,7 @@ export default defineConfig({
           items: [
             {
               text: '日常记录',
-              collapsed: false,
+              collapsed: true,
               items: [
                 { text: '第一次', link: '/老博客/个人经历/日常记录/第一次' },
                 { text: '第二次', link: '/老博客/个人经历/日常记录/第二次' },
@@ -209,7 +199,7 @@ export default defineConfig({
             },
             {
               text: '阶段总结',
-              collapsed: false,
+              collapsed: true,
               items: [
                 { text: '重启博客', link: '/老博客/个人经历/总结/重启博客' },
                 { text: '重现老博客文章', link: '/老博客/个人经历/总结/重现老博客文章' },
@@ -222,7 +212,7 @@ export default defineConfig({
             {
               text: '面试经历',
               link: '/老博客/个人经历/面试经历/',
-              collapsed: false,
+              collapsed: true,
               items: [
                 { text: '第一次面试', link: '/老博客/个人经历/面试经历/第一次面试' },
               ],
@@ -230,7 +220,7 @@ export default defineConfig({
             {
               text: '实习工作',
               link: '/老博客/个人经历/实习工作/',
-              collapsed: false,
+              collapsed: true,
               items: [
                 { text: '第一周工作', link: '/老博客/个人经历/实习工作/第一周工作' },
                 { text: '第二周工作', link: '/老博客/个人经历/实习工作/第二周工作' },
@@ -238,7 +228,7 @@ export default defineConfig({
                 {
                   text: '网络安全',
                   link: '/老博客/个人经历/实习工作/网络安全/',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
                     { text: '关键基础设施保护', link: '/老博客/个人经历/实习工作/网络安全/关键基础设施保护' },
                     { text: '攻防与终端安全', link: '/老博客/个人经历/实习工作/网络安全/攻防与终端安全' },
