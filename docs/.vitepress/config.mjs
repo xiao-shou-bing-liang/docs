@@ -5,6 +5,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+// ---------------------------------------------------------------- 站点根路径
+// GitHub Pages 项目页地址为 https://<owner>.github.io/<repo>/，故 base 取 /<repo>/
+const SITE_BASE = '/docs/'
+
 // ---------------------------------------------------------------- 时间线数据
 // 扫描所有 md 的 frontmatter 日期，供「时间线」页面使用
 const SRC_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -132,15 +136,17 @@ export default defineConfig({
   },
   extends: escookConfig,
   lastUpdated: false,
-  // 绑定自定义域名 blog.singlekobold.cn 后站点在域名根目录，
-  // 不能再沿用仓库名 /docs/ 作为 base（否则静态资源全部 404）
-  base: "/",
-  head: [["link", { rel: "icon", href: "/滑稽.jpg" }]],
+  // 部署在 GitHub Pages 的项目页：https://xiao-shou-bing-liang.github.io/docs/
+  // 按官方文档（guide/deploy → Setting a Public Base Path）：部署到 user.github.io/repo/
+  // 时 base 必须是 "/repo/"，否则静态资源和站内链接都会 404
+  base: SITE_BASE,
+  // head 里的地址不会被自动拼接 base，需要手动带上
+  head: [["link", { rel: "icon", href: SITE_BASE + "滑稽.jpg" }]],
   title: "池溟昌胤的博客文档",
   description: "A VitePress Site",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    logo: "滑稽.jpg", // 配置logo位置，public目录
+    logo: "/滑稽.jpg", // 必须以 / 开头，否则 withBase 不会拼接 base，内页会 404
     outlineTitle: "文章目录",
     outline: "deep",
     footer: {
