@@ -132,7 +132,9 @@ export default defineConfig({
   },
   extends: escookConfig,
   lastUpdated: false,
-  base: "/docs/",
+  // 绑定自定义域名 blog.singlekobold.cn 后站点在域名根目录，
+  // 不能再沿用仓库名 /docs/ 作为 base（否则静态资源全部 404）
+  base: "/",
   head: [["link", { rel: "icon", href: "/滑稽.jpg" }]],
   title: "池溟昌胤的博客文档",
   description: "A VitePress Site",
