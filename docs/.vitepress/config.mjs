@@ -1,8 +1,81 @@
 import { defineConfig } from 'vitepress'
 import { defineConfigWithTheme } from 'vitepress'
 import escookConfig from '@escook/vitepress-theme/config'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+// ---------------------------------------------------------------- 时间线数据
+// 扫描所有 md 的 frontmatter 日期，供「时间线」页面使用
+const SRC_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+
+function scanTimeline() {
+  const items = []
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name === 'node_modules' || entry.name === 'public' || entry.name.startsWith('.')) continue
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.md')) continue
+
+      const rel = path.relative(SRC_DIR, full).replace(/\\/g, '/')
+      // 首页与友链不是文章，不进时间线
+      if (rel === 'index.md' || rel === 'team.md') continue
+
+      const text = fs.readFileSync(full, 'utf-8')
+      const fmMatch = /^---\r?\n([\s\S]*?)\r?\n---/.exec(text)
+      const fm = fmMatch ? fmMatch[1] : ''
+      const date = (/^date:\s*(\d{4}-\d{2}-\d{2})/m.exec(fm) || [])[1]
+      if (!date) continue
+
+      const seg = rel.split('/')
+      const isIndex = entry.name === 'index.md'
+
+      let title = (/^title:\s*(.+)$/m.exec(fm) || [])[1]
+      if (!title) {
+        const h1 = /^#\s+(.+)$/m.exec(text.slice(fmMatch ? fmMatch[0].length : 0))
+        title = h1 ? h1[1] : path.basename(full, '.md')
+      }
+      // 目录页的标题常常是「前言」之类，换成目录名更有辨识度
+      if (isIndex && /^(前言|介绍|序|首页|index)$/i.test(title.trim())) {
+        title = seg.length >= 2 ? seg[seg.length - 2] : '主页'
+      }
+
+      // 目录页保留尾部斜杠，其余去掉 .md
+      const route = '/' + rel.replace(/\.md$/, '').replace(/(^|\/)index$/, '$1')
+      const section = seg[0] === '老博客' && seg.length > 2 ? seg[1] : seg[0].replace(/\.md$/, '')
+
+      items.push({ date, title: title.trim(), route, section })
+    }
+  }
+  walk(SRC_DIR)
+  return items.sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title))
+}
+
+function timelineDataPlugin() {
+  const VIRTUAL_ID = 'virtual:timeline-data'
+  const RESOLVED = '\0' + VIRTUAL_ID
+  return {
+    name: 'vp-timeline-data',
+    resolveId(id) {
+      if (id === VIRTUAL_ID) return RESOLVED
+    },
+    load(id) {
+      if (id === RESOLVED) return `export default ${JSON.stringify(scanTimeline())}`
+    },
+    handleHotUpdate({ file, server }) {
+      if (!file.endsWith('.md')) return
+      const mod = server.moduleGraph.getModuleById(RESOLVED)
+      if (mod) server.moduleGraph.invalidateModule(mod)
+    },
+  }
+}
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  vite: {
+    plugins: [timelineDataPlugin()],
+  },
   markdown: {
     math: true,
     image: {
@@ -44,6 +117,7 @@ export default defineConfig({
     confetti: false,
     nav: [
       { text: '我的主页', link: '/' },
+      { text: '时间线', link: '/时间线' },
       { text: '友情链接', link: '/team.md' },
       { text: '知识', link: '/知识/' },
       { text: '记录', link: '/记录/' },
