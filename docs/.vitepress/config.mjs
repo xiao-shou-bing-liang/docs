@@ -28,7 +28,7 @@ export default defineConfig({
     },
   },
   extends: escookConfig,
-  lastUpdated: true,
+  lastUpdated: false,
   base: "/docs/",
   head: [["link", { rel: "icon", href: "/滑稽.jpg" }]],
   title: "池溟昌胤的博客文档",

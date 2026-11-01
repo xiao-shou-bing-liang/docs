@@ -1,3 +1,7 @@
+---
+date: 2025-10-19
+---
+
 # Gitea + Jenkins实现CI/CD
 
 也是折腾了一天现在来写一个教学,教学用的环境就是Ubuntu24的Server版

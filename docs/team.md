@@ -1,4 +1,6 @@
 ---
+date: 2024-07-09
+
 layout: page
 ---
 <script setup>
