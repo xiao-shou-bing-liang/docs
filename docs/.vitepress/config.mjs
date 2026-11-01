@@ -40,6 +40,10 @@ function scanTimeline() {
       if (isIndex && /^(前言|介绍|序|首页|index)$/i.test(title.trim())) {
         title = seg.length >= 2 ? seg[seg.length - 2] : '主页'
       }
+      // day-01 这类标题单独看没有信息量，补上所属目录
+      if (/^day[-_ ]?\d+$/i.test(title.trim()) && seg.length >= 2) {
+        title = seg[seg.length - 2] + ' ' + title.trim()
+      }
 
       // 目录页保留尾部斜杠，其余去掉 .md
       const route = '/' + rel.replace(/\.md$/, '').replace(/(^|\/)index$/, '$1')
