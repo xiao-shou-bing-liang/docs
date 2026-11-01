@@ -9,6 +9,28 @@ import { fileURLToPath } from 'node:url'
 // 扫描所有 md 的 frontmatter 日期，供「时间线」页面使用
 const SRC_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
+// 取正文里第一个真正的 H1（跳过 fenced code block 里的 # 注释）
+function firstH1(body) {
+  let inFence = false
+  let fenceChar = ''
+  for (const line of body.split(/\r?\n/)) {
+    const fence = /^\s*(`{3,}|~{3,})/.exec(line)
+    if (fence) {
+      if (!inFence) {
+        inFence = true
+        fenceChar = fence[1][0]
+      } else if (fence[1][0] === fenceChar) {
+        inFence = false
+      }
+      continue
+    }
+    if (inFence) continue
+    const h1 = /^#\s+(.+)$/.exec(line)
+    if (h1) return h1[1].trim()
+  }
+  return ''
+}
+
 function scanTimeline() {
   const items = []
   const walk = (dir) => {
@@ -31,14 +53,18 @@ function scanTimeline() {
       const seg = rel.split('/')
       const isIndex = entry.name === 'index.md'
 
-      let title = (/^title:\s*(.+)$/m.exec(fm) || [])[1]
-      if (!title) {
-        const h1 = /^#\s+(.+)$/m.exec(text.slice(fmMatch ? fmMatch[0].length : 0))
-        title = h1 ? h1[1] : path.basename(full, '.md')
-      }
-      // 目录页的标题常常是「前言」之类，换成目录名更有辨识度
-      if (isIndex && /^(前言|介绍|序|首页|index)$/i.test(title.trim())) {
-        title = seg.length >= 2 ? seg[seg.length - 2] : '主页'
+      const h1Title = firstH1(text.slice(fmMatch ? fmMatch[0].length : 0))
+
+      // 「前言」类的分区落地页不算文章，不进时间线
+      if (isIndex && (!h1Title || /^(前言|介绍|序|首页|index)$/i.test(h1Title))) continue
+
+      // 没有 H1 时用文件名（如《Linux基础》总集篇），比正文里的小标题更可信
+      const base = path.basename(full, '.md')
+      const fmTitle = (/^title:\s*(.+)$/m.exec(fm) || [])[1]
+      let title = fmTitle || h1Title || base
+      // H1 过短（如「学习」「计划」「关基」）时，文件名反而更能代表这篇文章
+      if (!fmTitle && h1Title && h1Title.length < 4 && base.length > h1Title.length) {
+        title = base
       }
       // day-01 这类标题单独看没有信息量，补上所属目录
       if (/^day[-_ ]?\d+$/i.test(title.trim()) && seg.length >= 2) {

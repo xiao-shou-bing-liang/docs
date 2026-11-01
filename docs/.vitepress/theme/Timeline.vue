@@ -113,33 +113,61 @@ function monthDay(date) {
 
 /* ---------------- 轴 ---------------- */
 .tl-list {
-  position: relative;
   margin: 0;
-  padding: 0 0 0 18px;
+  padding: 0;
   list-style: none;
-  border-left: 2px solid var(--vp-c-divider);
 }
 
 .tl-item {
   position: relative;
+  padding-left: 34px;
 }
 
+/* 轨道：每个条目自带一段，首尾相接天然无缝 */
 .tl-item::before {
   content: '';
   position: absolute;
-  top: 16px;
-  left: -26px;
-  width: 8px;
-  height: 8px;
+  top: 0;
+  bottom: 0;
+  left: 5px;
+  width: 2px;
+  background-color: var(--vp-c-divider);
+}
+
+/* 圆点：圆心与轨道中心（6px）对齐 */
+.tl-item::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
   background-color: var(--vp-c-bg);
   border: 2px solid var(--vp-c-brand-1);
   border-radius: 50%;
   transition: background-color 0.25s, transform 0.25s;
 }
 
-.tl-item:hover::before {
+.tl-item:hover::after {
   background-color: var(--vp-c-brand-1);
-  transform: scale(1.25);
+  transform: scale(1.15);
+}
+
+/* 首项：轨道从圆点开始，不向上探出 */
+.tl-list > .tl-item:first-child::before {
+  top: 21px;
+}
+
+/* 末项：轨道到圆点结束，不向下探出 */
+.tl-list > .tl-item:last-child::before {
+  bottom: auto;
+  height: 21px;
+}
+
+/* 该年只有一条时不需要轨道 */
+.tl-list > .tl-item:first-child:last-child::before {
+  display: none;
 }
 
 .tl-link {
