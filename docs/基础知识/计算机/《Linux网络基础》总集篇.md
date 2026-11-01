@@ -416,11 +416,11 @@
 - ```TCPdump -i ens33 icmp -nn```
 配了以上的命令之后只能从1号传输到2号的第二块网卡传不到第三号
 所以就需要以下的命令[路由器连通网段必须得有转发功能 计算机不属于自己的包会丢掉]
-```转发命令:echo 'net.IPv4.IP_forward = 1' >> /etc/sysctl.conf```
-```cat /etc/sysctl.conf```
-```TCPdump -i ens36 -nn```
+`转发命令:echo 'net.IPv4.IP_forward = 1' >> /etc/sysctl.conf`
+`cat /etc/sysctl.conf`
+`TCPdump -i ens36 -nn`
 此时可以把包传给3号但是3号无法传包回去，因为没配路由
-```route add -net 192.168.20.0/24 gw 172.16.1.12 ```
+`route add -net 192.168.20.0/24 gw 172.16.1.12`
 3号右端再添加一块网卡分配172.16.2.13
 3号右端添加router5配置172.16.2.14
 刚刚配置的静态路由只需要输入```systemctl restart network```就能还原
@@ -435,12 +435,12 @@
 
 - 上面配置的路由只有数据转发的作用，没有共享上网的作用
   路由器：nat 地址转换，共享上网的功能
-  ```route add -net 0.0.0.0/0 gw 192.168.20.2（看虚拟机的网关）```
+  `route add -net 0.0.0.0/0 gw 192.168.20.2（看虚拟机的网关）`
   清空at地址规则 ```IPtables -t nat -F```
-  ```IPtables -t nat -A POSTROUTING -s 172.16.1.0/24 -j MASQUERADE```
-  ```route add -net 0.0.0.0/0 gw 172.16.1.12```
-  ```vim /etc/resolv.conf```
-  ```nameserver 223.5.5.5  ```
+  `IPtables -t nat -A POSTROUTING -s 172.16.1.0/24 -j MASQUERADE`
+  `route add -net 0.0.0.0/0 gw 172.16.1.12`
+  `vim /etc/resolv.conf`
+  `nameserver 223.5.5.5`
   ttl 是time to live 的缩写，该字段指定IP包被路由器丢弃之前允许通过的最大网段数量【可以通过注册表来修改】
 
 ### 5.5 给Linux路由器配置DHCP服务

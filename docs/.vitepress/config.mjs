@@ -8,6 +8,16 @@ export default defineConfig({
     image: {
       // 默认禁用图片懒加载
       lazyLoading: true
+    },
+    // 代码块语言别名：写 assembly / c# 也能正确高亮
+    // （shiki 里的真实语言名是 asm 与 csharp）
+    languageAlias: {
+      assembly: 'asm',
+      'c#': 'csharp',
+      cs: 'csharp',
+      'c++': 'cpp',
+      sh: 'shell',
+      text: 'txt',
     }
   },
   extends: escookConfig,
