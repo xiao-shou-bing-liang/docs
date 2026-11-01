@@ -67,11 +67,41 @@ export default defineConfig({
           link: '/老博客/基础知识/',
           collapsed: true,
           items: [
-            { text: '网络知识基础', link: '/老博客/基础知识/计算机/《Linux网络基础》总集篇' },
-            { text: 'Linux基础', link: '/老博客/基础知识/计算机/《Linux基础》总集篇' },
-            { text: 'MySQL(未完成)', link: '/老博客/基础知识/计算机/MySQL' },
-            { text: '操作系统(未完成)', link: '/老博客/基础知识/计算机/操作系统' },
-            { text: '计算机组成原理(未完成)', link: '/老博客/基础知识/计算机/计算机组成原理' },
+            {
+              text: '计算机',
+              collapsed: false,
+              items: [
+                { text: '网络知识基础', link: '/老博客/基础知识/计算机/《Linux网络基础》总集篇' },
+                { text: 'Linux基础', link: '/老博客/基础知识/计算机/《Linux基础》总集篇' },
+                { text: 'MySQL(未完成)', link: '/老博客/基础知识/计算机/MySQL' },
+                { text: '操作系统(未完成)', link: '/老博客/基础知识/计算机/操作系统' },
+                { text: '计算机组成原理(未完成)', link: '/老博客/基础知识/计算机/计算机组成原理' },
+              ],
+            },
+            {
+              text: '后端开发',
+              link: '/老博客/基础知识/后端开发/',
+              collapsed: false,
+              items: [
+                { text: 'javaweb 课程总结', link: '/老博客/基础知识/后端开发/javaweb/课程总结' },
+                {
+                  text: '苍穹外卖',
+                  link: '/老博客/基础知识/后端开发/苍穹外卖/',
+                  collapsed: false,
+                  items: [
+                    { text: 'day-01', link: '/老博客/基础知识/后端开发/苍穹外卖/day-01' },
+                    { text: 'day-02', link: '/老博客/基础知识/后端开发/苍穹外卖/day-02' },
+                    { text: 'day-03', link: '/老博客/基础知识/后端开发/苍穹外卖/day-03' },
+                    { text: 'day-04', link: '/老博客/基础知识/后端开发/苍穹外卖/day-04' },
+                    { text: 'day-05', link: '/老博客/基础知识/后端开发/苍穹外卖/day-05' },
+                    { text: 'day-06', link: '/老博客/基础知识/后端开发/苍穹外卖/day-06' },
+                    { text: 'day-07', link: '/老博客/基础知识/后端开发/苍穹外卖/day-07' },
+                    { text: 'day-08', link: '/老博客/基础知识/后端开发/苍穹外卖/day-08' },
+                    { text: 'day-09', link: '/老博客/基础知识/后端开发/苍穹外卖/day-09' },
+                  ],
+                },
+              ],
+            },
           ],
         },
         {
