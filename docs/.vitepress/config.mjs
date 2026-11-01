@@ -15,7 +15,17 @@ export default defineConfig({
       'c++': 'cpp',
       sh: 'shell',
       text: 'txt',
-    }
+    },
+    config(md) {
+      // Vue 相关文档里大量的 {{ }} 插值写法，在编译成 Vue 模板时会被当成表达式
+      // 求值（如 message.split / object.id）导致渲染报错。
+      // 这里在 markdown 渲染完成后统一转成 HTML 实体，浏览器端显示仍是 {{ }}。
+      const render = md.renderer.render.bind(md.renderer)
+      md.renderer.render = (tokens, options, env) =>
+        render(tokens, options, env)
+          .replace(/\{\{/g, '&#123;&#123;')
+          .replace(/\}\}/g, '&#125;&#125;')
+    },
   },
   extends: escookConfig,
   lastUpdated: true,
@@ -41,6 +51,7 @@ export default defineConfig({
     ],
     sidebar: {
       '/老博客/': [
+        { text: '前言', link: '/老博客/' },
         {
           text: '环境配置',
           link: '/老博客/环境/',
@@ -100,6 +111,78 @@ export default defineConfig({
                     { text: 'day-09', link: '/老博客/基础知识/后端开发/苍穹外卖/day-09' },
                   ],
                 },
+                { text: '学情管理系统', link: '/老博客/基础知识/后端开发/学情管理系统/' },
+                { text: 'Gitea + Jenkins实现CI/CD', link: '/老博客/基础知识/后端开发/学情管理系统/Gitea与Jenkins实现CI-CD' },
+              ],
+            },
+            {
+              text: '前端开发',
+              link: '/老博客/基础知识/前端开发/',
+              collapsed: false,
+              items: [
+                {
+                  text: 'Vue3 知识库',
+                  link: '/老博客/基础知识/前端开发/Vue3/',
+                  collapsed: false,
+                  items: [
+                    { text: '简介', link: '/老博客/基础知识/前端开发/Vue3/简介' },
+                    { text: '快速上手', link: '/老博客/基础知识/前端开发/Vue3/快速上手' },
+                    { text: '创建一个Vue应用', link: '/老博客/基础知识/前端开发/Vue3/创建一个Vue应用' },
+                    { text: '模板语法', link: '/老博客/基础知识/前端开发/Vue3/模板语法' },
+                    { text: '响应式基础', link: '/老博客/基础知识/前端开发/Vue3/响应式基础' },
+                    { text: '计算属性', link: '/老博客/基础知识/前端开发/Vue3/计算属性' },
+                    { text: '描述下对Vue生命周期的理解', link: '/老博客/基础知识/前端开发/Vue3/描述下对Vue生命周期的理解' },
+                    {
+                      text: '现代前端开发必知',
+                      link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/',
+                      collapsed: false,
+                      items: [
+                        { text: '01-如何成为现代前端六边形战士', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/01-如何成为现代前端六边形战士' },
+                        { text: '02-上期回顾与章节概览', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/02-上期回顾与章节概览' },
+                        { text: '03-计算机网络上', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/03-计算机网络上' },
+                        { text: '04-计算机网络下', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/04-计算机网络下' },
+                        { text: '05-编程语言-ES标准-JS引擎和运行时', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/05-编程语言-ES标准-JS引擎和运行时' },
+                        { text: '06-简单又复杂的工具链', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/06-简单又复杂的工具链' },
+                        { text: '07-构建用户界面的新姿势', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/07-构建用户界面的新姿势' },
+                        { text: '08-应用框架', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/08-应用框架' },
+                        { text: '09-性能优化方案', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/09-性能优化方案' },
+                        { text: '10-用户体验', link: '/老博客/基础知识/前端开发/Vue3/现代前端开发必知/10-用户体验' },
+                      ],
+                    },
+                    {
+                      text: 'CSS 实战',
+                      link: '/老博客/基础知识/前端开发/Vue3/CSS/',
+                      collapsed: false,
+                      items: [
+                        { text: 'CSS爆肝', link: '/老博客/基础知识/前端开发/Vue3/CSS/' },
+                        { text: 'header主体框架', link: '/老博客/基础知识/前端开发/Vue3/CSS/header主体框架' },
+                        { text: 'header动画', link: '/老博客/基础知识/前端开发/Vue3/CSS/header动画' },
+                        { text: '重要的讲座', link: '/老博客/基础知识/前端开发/Vue3/CSS/重要的讲座' },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  text: '动画与交互',
+                  link: '/老博客/基础知识/前端开发/动画与交互/',
+                  collapsed: false,
+                  items: [
+                    { text: 'Gsap 时间线', link: '/老博客/基础知识/前端开发/动画与交互/时间线以及简单的效果' },
+                    { text: '滑动阻尼与横向滚动', link: '/老博客/基础知识/前端开发/动画与交互/滑动阻尼与横向滚动' },
+                    { text: 'ES6异步处理', link: '/老博客/基础知识/前端开发/动画与交互/ES6异步处理' },
+                  ],
+                },
+                {
+                  text: '工程实践',
+                  link: '/老博客/基础知识/前端开发/工程实践/',
+                  collapsed: false,
+                  items: [
+                    { text: '动态首页配置', link: '/老博客/基础知识/前端开发/工程实践/动态首页配置' },
+                    { text: '主要页面逻辑', link: '/老博客/基础知识/前端开发/工程实践/主要页面逻辑' },
+                    { text: '新的DOM操作', link: '/老博客/基础知识/前端开发/工程实践/新的DOM操作' },
+                    { text: '文件上传', link: '/老博客/基础知识/前端开发/工程实践/文件上传' },
+                  ],
+                },
               ],
             },
           ],
@@ -136,6 +219,45 @@ export default defineConfig({
                 { text: '大二下开学总结', link: '/老博客/个人经历/总结/大二下开学总结' },
               ],
             },
+            {
+              text: '面试经历',
+              link: '/老博客/个人经历/面试经历/',
+              collapsed: false,
+              items: [
+                { text: '第一次面试', link: '/老博客/个人经历/面试经历/第一次面试' },
+              ],
+            },
+            {
+              text: '实习工作',
+              link: '/老博客/个人经历/实习工作/',
+              collapsed: false,
+              items: [
+                { text: '第一周工作', link: '/老博客/个人经历/实习工作/第一周工作' },
+                { text: '第二周工作', link: '/老博客/个人经历/实习工作/第二周工作' },
+                { text: '会议记录', link: '/老博客/个人经历/实习工作/会议记录' },
+                {
+                  text: '网络安全',
+                  link: '/老博客/个人经历/实习工作/网络安全/',
+                  collapsed: false,
+                  items: [
+                    { text: '关键基础设施保护', link: '/老博客/个人经历/实习工作/网络安全/关键基础设施保护' },
+                    { text: '攻防与终端安全', link: '/老博客/个人经历/实习工作/网络安全/攻防与终端安全' },
+                    { text: 'Struts2 S2-045漏洞态势分析', link: '/老博客/个人经历/实习工作/网络安全/Struts2-S2-045漏洞态势分析' },
+                    { text: '烽台学习平台建议', link: '/老博客/个人经历/实习工作/网络安全/烽台学习平台建议' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          text: '创新基地',
+          link: '/老博客/创新基地/',
+          collapsed: true,
+          items: [
+            { text: '第一次培训', link: '/老博客/创新基地/第一次培训' },
+            { text: '第二次培训', link: '/老博客/创新基地/第二次培训' },
+            { text: '新基地官网进度', link: '/老博客/创新基地/新基地官网进度' },
           ],
         },
       ],
