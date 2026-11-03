@@ -3,7 +3,8 @@
 <!--
 audience: AI coding agent
 style: machine-first; normative statements, no narrative
-precedence: code > this file > assumption. behavior change ⇒ patch this file in the same commit
+precedence: code > this file > assumption
+commit_policy: HUMAN-TRIGGERED ONLY — never run `git commit` or `git push` unless the human explicitly says "提交" / "推送"
 -->
 
 ```yaml
@@ -260,7 +261,11 @@ Deviation from these numbers ⇒ intentional change or regression; explain it in
 
 ## 11. COMMIT CONTRACT
 
+- **VCS IS HUMAN-TRIGGERED ONLY.** Never run `git commit` / `git push` on your own initiative, and never chain them.
+  - human says "提交" ⇒ run `git commit` (do NOT push).
+  - human says "推送" ⇒ run `git push` (do not add new changes to that push).
+  - no instruction ⇒ leave changes dirty in the working tree, report changed files + a suggested message, stop.
 - message: conventional commits, chinese subject allowed (`feat(i18n): …`, `docs: …`).
-- one logical change per commit; `main` is deploy branch.
-- include README/spec updates in the same commit as the behavior change.
+- one logical change per commit; `main` is deploy branch (push ⇒ auto deploy).
+- when a commit does happen, include the matching README/spec update in the same commit.
 - never commit `node_modules`, `dist`, `cache`, `.temp`, or translation manifests.
