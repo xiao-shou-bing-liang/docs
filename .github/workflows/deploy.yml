@@ -1,6 +1,7 @@
 # 构建 VitePress 站点并发布到 GitHub Pages
 # 站点地址：https://blog.singlekobold.cn
-# 注意：绑定自定义域名后站点位于域名根目录，config.mjs 里的 base 必须是 "/"
+# 注意：base 必须与站点实际部署路径一致（项目页为 "/docs/"，绑定自定义域名且位于
+# 域名根目录时为 "/"），配置见 docs/.vitepress/config/index.mjs
 name: Deploy VitePress site to Pages
 
 on:
@@ -36,7 +37,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # VitePress 2 依赖 Vite 8，要求 Node ^20.19 || >=22.12
+          node-version: 22
           cache: npm
 
       - name: Setup Pages

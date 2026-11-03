@@ -1,14 +1,39 @@
 <script setup>
 import { computed } from 'vue'
-import { withBase } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 import data from 'virtual:timeline-data'
 
-// 数据由 config.mjs 里的 vp-timeline-data 插件在构建时扫描 frontmatter 生成（已按日期倒序）
-const items = data
+// 数据由 config/timeline.mjs 里的 vp-timeline-data 插件在构建时扫描 frontmatter 生成（已按日期倒序）
+const all = data
+
+// 组件文案跟随当前页面所在语言（/en/ 下为英文）
+const { lang } = useData()
+const isEn = computed(() => lang.value.toLowerCase().startsWith('en'))
+
+// 中英文章各一条时间线：英文页只看 /en/ 下的条目，中文页只看其余条目
+const items = computed(() => all.filter((it) => (isEn.value ? it.lang === 'en' : it.lang !== 'en')))
+
+const labels = computed(() =>
+  isEn.value
+    ? {
+        heading: 'Timeline',
+        sub: (n) => `Every post, newest first · ${n} in total`,
+        empty: 'No posts yet.',
+      }
+    : {
+        heading: '时间线',
+        sub: (n) => `所有文章按发布日期倒序排列 · 共 ${n} 篇`,
+        empty: '暂无文章',
+      }
+)
+
+const dateFmt = computed(
+  () => new Intl.DateTimeFormat(lang.value, { month: 'short', day: 'numeric', timeZone: 'UTC' })
+)
 
 const years = computed(() => {
   const map = new Map()
-  for (const it of items) {
+  for (const it of items.value) {
     const y = it.date.slice(0, 4)
     if (!map.has(y)) map.set(y, [])
     map.get(y).push(it)
@@ -21,17 +46,24 @@ function href(route) {
 }
 
 function monthDay(date) {
-  const [, m, d] = date.split('-')
-  return `${Number(m)} 月 ${Number(d)} 日`
+  const [y, m, d] = date.split('-').map(Number)
+  if (!isEn.value) return `${m} 月 ${d} 日`
+  return dateFmt.value.format(new Date(Date.UTC(y, m - 1, d)))
 }
 </script>
 
 <template>
   <div class="tl">
     <header class="tl-header">
-      <h1 class="tl-heading">时间线</h1>
-      <p class="tl-sub">所有文章按发布日期倒序排列 · 共 {{ items.length }} 篇</p>
+      <h1 class="tl-heading">{{ labels.heading }}</h1>
+      <p class="tl-sub">{{ labels.sub(items.length) }}</p>
     </header>
+
+    <!-- 页面里写在 <Timeline> ... </Timeline> 之间的说明文字（如英文页的 NOTE）
+         放在这里才能跟着时间线一起居中，否则会顶到整页宽度 -->
+    <div v-if="$slots.default" class="tl-intro">
+      <slot />
+    </div>
 
     <section v-for="g in years" :key="g.year" class="tl-year">
       <div class="tl-year-label">
@@ -48,7 +80,7 @@ function monthDay(date) {
       </ul>
     </section>
 
-    <p v-if="!items.length" class="tl-empty">暂无文章</p>
+    <p v-if="!items.length" class="tl-empty">{{ labels.empty }}</p>
   </div>
 </template>
 
@@ -82,6 +114,16 @@ function monthDay(date) {
   font-size: 14px;
   line-height: 24px;
   color: var(--vp-c-text-2);
+}
+
+/* ---------------- 页面附带的说明（可选插槽） ---------------- */
+.tl-intro {
+  margin-top: 28px;
+}
+
+/* 说明块里的提示框自带上下 margin，居中容器内再收紧一点 */
+.tl-intro :deep(.custom-block) {
+  margin: 0;
 }
 
 /* ---------------- 年份 ---------------- */
