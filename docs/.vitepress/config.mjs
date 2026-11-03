@@ -363,6 +363,30 @@ export default defineConfig({
           ],
         },
       ],
+      '/知识/': [
+        {
+          text: '项目',
+          link: '/知识/项目/',
+          collapsed: true,
+          items: [
+            { text: '反无前端', link: '/知识/项目/反无/' },
+            { text: '人脸前端', link: '/知识/项目/人脸/' },
+            { text: '人脸测试', link: '/知识/项目/人脸测试/' },
+          ],
+        },
+      ],
+      '/记录/': [
+        { text: '周志', link: '/记录/周志/' },
+        { text: '月志', link: '/记录/月志/' },
+        {
+          text: '阶段性总结',
+          link: '/记录/阶段性总结/',
+          collapsed: false,
+          items: [
+            { text: '新的起点', link: '/记录/阶段性总结/新的起点' },
+          ],
+        },
+      ],
     },
     search: {
       provider: "local",

@@ -15,6 +15,9 @@ hero:
     - theme: brand
       text: 周记
       link: /老博客/个人经历/index.md
+    - theme: alt
+      text: 新的起点
+      link: /记录/阶段性总结/新的起点
 
 features:
   - title: 《日常》
