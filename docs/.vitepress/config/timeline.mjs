@@ -78,7 +78,7 @@ export function scanTimeline() {
         ? (seg[1] || 'en')
         : (seg[0] === '老博客' && seg.length > 2 ? seg[1] : seg[0].replace(/\.md$/, ''))
 
-      items.push({ date, title: title.trim(), route, section, lang })
+      items.push({ date, title: title.trim(), route, section, lang, file: full })
     }
   }
   walk(SRC_DIR)
@@ -94,7 +94,11 @@ export function timelineDataPlugin() {
       if (id === VIRTUAL_ID) return RESOLVED
     },
     load(id) {
-      if (id === RESOLVED) return `export default ${JSON.stringify(scanTimeline())}`
+      if (id === RESOLVED) {
+        // file 只给构建期（RSS 摘要）用，不塞进客户端虚拟模块
+        const items = scanTimeline().map(({ file, ...rest }) => rest)
+        return `export default ${JSON.stringify(items)}`
+      }
     },
     handleHotUpdate({ file, server }) {
       if (!file.endsWith('.md')) return

@@ -141,6 +141,10 @@ export const enThemeConfig = {
                   { text: 'Reactivity Fundamentals', link: '/en/archive/computer-science/frontend/vue3/reactivity-fundamentals' },
                   { text: 'Computed Properties', link: '/en/archive/computer-science/frontend/vue3/computed-properties' },
                   { text: 'Understanding the Vue Lifecycle', link: '/en/archive/computer-science/frontend/vue3/vue-lifecycle' },
+                  { text: 'Getting Started', link: '/en/archive/computer-science/frontend/vue3/getting-started' },
+                  { text: 'Basics', link: '/en/archive/computer-science/frontend/vue3/basics' },
+                  { text: 'Syntax Summary', link: '/en/archive/computer-science/frontend/vue3/syntax-summary' },
+                  { text: 'Interview Handbook', link: '/en/archive/computer-science/frontend/vue3/interview-questions' },
                   {
                     text: 'Modern Frontend Essentials',
                     link: '/en/archive/computer-science/frontend/vue3/modern-frontend-essentials/',
